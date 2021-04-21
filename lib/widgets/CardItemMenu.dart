@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CardItemMenu extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback onPressed;
+  final IconData icon;
 
-  const CardItemMenu({Key key, this.title, this.description, this.onPressed}) : super(key: key);
+  const CardItemMenu({Key key, this.title, this.description, this.onPressed, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CardItemMenu extends StatelessWidget {
             AspectRatio(
               aspectRatio: 18.0 / 15.0,
               child: Icon(
-                MdiIcons.controllerClassic,
+                icon,
                 size: 120,
                 color: Colors.black,
               ),
