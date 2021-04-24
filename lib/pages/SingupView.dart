@@ -1,64 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:my_database_game/models/Users.dart';
-import 'package:my_database_game/pages/HomeView.dart';
-import 'package:my_database_game/pages/SingupView.dart';
+import 'package:my_database_game/models/InsertTableInfo.dart';
+import 'package:my_database_game/pages/LoginView.dart';
 import 'package:my_database_game/services/api.dart';
-import 'package:my_database_game/store/ControllerUser.dart';
-import 'package:provider/provider.dart';
 
-class LoginView extends StatefulWidget {
-  LoginView({Key key}) : super(key: key);
+class SingupView extends StatefulWidget {
+  SingupView({Key key}) : super(key: key);
 
   @override
-  LoginViewWithState createState() => LoginViewWithState();
+  SingupViewWithState createState() => SingupViewWithState();
 }
 
-class LoginViewWithState extends State<LoginView> {
-  ControllerUser userController = ControllerUser();
+class SingupViewWithState extends State<SingupView> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userController = Provider.of<ControllerUser>(context);
-  }
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   @override
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
+    nameController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
-  void doLogin(BuildContext context) async {
+  void doSingup(BuildContext context) async {
     String username = usernameController.text;
     String password = passwordController.text;
+    String email = emailController.text;
+    String name = nameController.text;
 
-    userController.deleteUser();
+    InsertTableInfo tableInfo = await createLogin(username, password, email, name);
 
-    Users users = await isLoginValid(username, password);
-
-    bool isValidLogin = users.isOk && users.data.length > 0;
+    bool isValidLogin = tableInfo.isOk;
     if (isValidLogin) {
-      User user = users.data[0];
-      userController.userId = user.id;
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeView()), ModalRoute.withName('/'));
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginView()), ModalRoute.withName('/'));
     } else {
-      final snackBar = SnackBar(content: Text('Usuário e/ou senha inválidos.'));
+      final snackBar = SnackBar(content: Text('Há um ou mais campos inválidos.'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    usernameController.text = "tiagoedge"; // TODO remove in final version
-    passwordController.text = "123456"; // TODO remove in final version
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Criar Conta"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -78,17 +67,57 @@ class LoginViewWithState extends State<LoginView> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: 0,
+              ),
               child: TextField(
                 controller: usernameController,
+                maxLength: 16,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Usuário',
+                  hintText: 'Usuário (Obrigatório)',
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: 0,
+              ),
+              child: TextField(
+                controller: nameController,
+                maxLength: 30,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Nome',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: 0,
+              ),
+              child: TextField(
+                controller: emailController,
+                maxLength: 255,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Email',
+                  hintText: 'Email (Obrigatório)',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
                 left: 15.0,
                 right: 15.0,
                 top: 15,
@@ -96,10 +125,12 @@ class LoginViewWithState extends State<LoginView> {
               ),
               child: TextField(
                 obscureText: true,
+                maxLength: 32,
                 controller: passwordController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Senha',
+                  hintText: 'Senha (Obrigatório)',
                 ),
               ),
             ),
@@ -112,10 +143,10 @@ class LoginViewWithState extends State<LoginView> {
               ),
               child: TextButton(
                 onPressed: () {
-                  doLogin(context);
+                  doSingup(context);
                 },
                 child: Text(
-                  'Entrar',
+                  'Criar',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -129,10 +160,10 @@ class LoginViewWithState extends State<LoginView> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SingupView()),
+                  MaterialPageRoute(builder: (context) => LoginView()),
                 );
               },
-              child: Text('Criar Conta'),
+              child: Text('Fazer Login'),
             ),
           ],
         ),
