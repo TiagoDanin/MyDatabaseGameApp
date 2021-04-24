@@ -6,7 +6,9 @@ import 'package:my_database_game/pages/UsersTopView.dart';
 import 'package:my_database_game/pages/GamesTopView.dart';
 import 'package:my_database_game/pages/UsersView.dart';
 import 'package:my_database_game/services/api.dart';
+import 'package:my_database_game/store/ControllerUser.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -16,8 +18,15 @@ class HomeView extends StatefulWidget {
 }
 
 class HomeViewWithState extends State<HomeView> {
+  ControllerUser userController = ControllerUser();
   String currentCategory = "";
   Map<String, String> category = {};
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userController = Provider.of<ControllerUser>(context);
+  }
 
   void getCurrentCategory() async {
     category = {};
