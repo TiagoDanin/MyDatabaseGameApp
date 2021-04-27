@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/models/Genders.dart';
-import 'package:my_database_game/pages/UsersTopView.dart';
 import 'package:my_database_game/pages/GamesTopView.dart';
+import 'package:my_database_game/pages/UsersTopView.dart';
 import 'package:my_database_game/pages/UsersView.dart';
 import 'package:my_database_game/services/api.dart';
 import 'package:my_database_game/store/ControllerUser.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
 import 'package:provider/provider.dart';
+
+import 'GameView.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -138,7 +140,9 @@ class HomeViewWithState extends State<HomeView> {
                             description: game.descricao,
                             icon: MdiIcons.controllerClassic,
                             onPressed: () {
-                              // TODO
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => GameView(game: game)),
+                              );
                             }),
                       )
                       .toList(),

@@ -1,5 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:my_database_game/models/Comments.dart';
+import 'package:my_database_game/models/GameDeveloper.dart';
+import 'package:my_database_game/models/GameDistributor.dart';
+import 'package:my_database_game/models/GameGender.dart';
+import 'package:my_database_game/models/GameOs.dart';
+import 'package:my_database_game/models/GameRate.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/models/Genders.dart';
 import 'package:my_database_game/models/InsertTableInfo.dart';
@@ -158,4 +163,84 @@ Future<InsertTableInfo> createLogin(String username, String password, String ema
   }
 
   return InsertTableInfo(isOk: false);
+}
+
+Future<GameOs> getOsGame(int gameId) async {
+  String url = '$apiBaseUrl/getOsGame';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "gameId": gameId,
+    });
+    if (response.statusCode == 200) {
+      return GameOs.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return GameOs(isOk: false);
+}
+
+Future<GameGender> getGendersGame(int gameId) async {
+  String url = '$apiBaseUrl/getGendersGame';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "gameId": gameId,
+    });
+    if (response.statusCode == 200) {
+      return GameGender.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return GameGender(isOk: false);
+}
+
+Future<GameDistributor> getDistributorGame(int gameId) async {
+  String url = '$apiBaseUrl/getDistributorGame';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "gameId": gameId,
+    });
+    if (response.statusCode == 200) {
+      return GameDistributor.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return GameDistributor(isOk: false);
+}
+
+Future<GameDeveloper> getDeveloperGame(int gameId) async {
+  String url = '$apiBaseUrl/getDeveloperGame';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "gameId": gameId,
+    });
+    if (response.statusCode == 200) {
+      return GameDeveloper.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return GameDeveloper(isOk: false);
+}
+
+Future<GameRate> getRateGame(int gameId) async {
+  String url = '$apiBaseUrl/getRateGame';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "gameId": gameId,
+    });
+    if (response.statusCode == 200) {
+      return GameRate.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return GameRate(isOk: false);
 }
