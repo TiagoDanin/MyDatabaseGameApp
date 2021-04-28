@@ -113,8 +113,8 @@ Future<Users> getAllUsersTops() async {
   return Users(isOk: false);
 }
 
-Future<Comments> getGameComments(String gameId) async {
-  String url = '$apiBaseUrl/getGameComments';
+Future<Comments> listCommentsGame(int gameId) async {
+  String url = '$apiBaseUrl/listCommentsGame';
   try {
     Response response = await Dio().get(url, queryParameters: {
       "gameId": gameId,
@@ -132,7 +132,7 @@ Future<Comments> getGameComments(String gameId) async {
 Future<Users> isLoginValid(String username, String password) async {
   String url = '$apiBaseUrl/isLoginValid';
   try {
-    Response response = await Dio().get(url, queryParameters: {
+    Response response = await Dio().post(url, data: {
       "username": username,
       "password": password,
     });
@@ -149,7 +149,7 @@ Future<Users> isLoginValid(String username, String password) async {
 Future<InsertTableInfo> createLogin(String username, String password, String email, String name) async {
   String url = '$apiBaseUrl/createLoginff';
   try {
-    Response response = await Dio().get(url, queryParameters: {
+    Response response = await Dio().post(url, data: {
       "username": username,
       "password": password,
       "email": email,
@@ -244,3 +244,22 @@ Future<GameRate> getRateGame(int gameId) async {
 
   return GameRate(isOk: false);
 }
+
+Future<InsertTableInfo> createComment(int gameId, int userId, String text) async {
+  String url = '$apiBaseUrl/createComment';
+  try {
+    Response response = await Dio().post(url, data: {
+      "gameId": gameId,
+      "userId": userId,
+      "text": text,
+    });
+    if (response.statusCode == 200) {
+      return InsertTableInfo.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return InsertTableInfo(isOk: false);
+}
+

@@ -20,15 +20,8 @@ class HomeView extends StatefulWidget {
 }
 
 class HomeViewWithState extends State<HomeView> {
-  ControllerUser userController = ControllerUser();
   String currentCategory = "";
   Map<String, String> category = {};
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userController = Provider.of<ControllerUser>(context);
-  }
 
   void getCurrentCategory() async {
     category = {};

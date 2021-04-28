@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:my_database_game/models/Comments.dart';
 import 'package:my_database_game/models/GameDeveloper.dart';
 import 'package:my_database_game/models/GameDistributor.dart';
 import 'package:my_database_game/models/GameGender.dart';
@@ -8,6 +9,8 @@ import 'package:my_database_game/models/GameOs.dart';
 import 'package:my_database_game/models/GameRate.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/services/api.dart';
+
+import 'CreateCommentView.dart';
 
 class GameView extends StatefulWidget {
   Game game;
@@ -27,6 +30,7 @@ class GameViewWithState extends State<GameView> {
   String developer;
   String distribution;
   String rate;
+  List<Comment> commentsList;
 
   void getOsGameState() async {
     GameOs gameOs = await getOsGame(widget.game.id);
@@ -81,6 +85,15 @@ class GameViewWithState extends State<GameView> {
     }
   }
 
+  void getCommentsGame() async {
+    Comments comments = await listCommentsGame(widget.game.id);
+    if (comments.isOk && comments.data.length > 0) {
+      setState(() {
+        commentsList = comments.data;
+      });
+    }
+  }
+
   void restoreState() {
     setState(() {
       name = widget.game.nome;
@@ -92,6 +105,7 @@ class GameViewWithState extends State<GameView> {
   @override
   void initState() {
     super.initState();
+    getCommentsGame();
     restoreState();
     getOsGameState();
     getGendersGameState();
@@ -167,11 +181,18 @@ class GameViewWithState extends State<GameView> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+            for (var comment in commentsList)
+              ListTile(
+                leading: Icon(MdiIcons.commentOutline),
+                title: Text('@${comment.nome}: ${comment.texto}'),
+              )
           ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Add your onPressed code here!
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateCommentView(gameId: widget.game.id))).then((_) {
+              getCommentsGame();
+            });
           },
           child: const Icon(Icons.article),
           backgroundColor: Colors.green,

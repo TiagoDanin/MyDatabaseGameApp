@@ -5,6 +5,8 @@ import 'package:my_database_game/models/Users.dart';
 import 'package:my_database_game/services/api.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
 
+import 'GameView.dart';
+
 class GamesTopView extends StatefulWidget {
   GamesTopView({Key key}) : super(key: key);
 
@@ -46,7 +48,9 @@ class GamesTopViewWithState extends State<GamesTopView> {
                             description: game.descricao,
                             icon: MdiIcons.controllerClassic,
                             onPressed: () {
-                              // TODO
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => GameView(game: game)),
+                              );
                             }),
                       )
                       .toList(),
