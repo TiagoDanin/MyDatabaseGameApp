@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/models/Genders.dart';
+import 'package:my_database_game/pages/GamesTopView.dart';
+import 'package:my_database_game/pages/UsersTopView.dart';
+import 'package:my_database_game/pages/UsersView.dart';
 import 'package:my_database_game/services/api.dart';
+import 'package:my_database_game/store/ControllerUser.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
+import 'package:provider/provider.dart';
+
+import 'GameView.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -33,15 +41,6 @@ class HomeViewWithState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("MyDatabaseGame"),
-        leading: IconButton(
-          icon: Icon(
-            Icons.menu,
-            semanticLabel: 'Menu',
-          ),
-          onPressed: () {
-            print('Menu button');
-          },
-        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -69,6 +68,55 @@ class HomeViewWithState extends State<HomeView> {
               })
         ],
       ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('My Database Game'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              title: Text('Games'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => HomeView()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Games Top'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => GamesTopView()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Usuários'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => UsersView()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Usuários Top'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => UsersTopView()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: FutureBuilder<Games>(
           future: getAllGamesList(currentCategory),
           builder: (BuildContext context, AsyncSnapshot<Games> snapshot) {
@@ -83,8 +131,11 @@ class HomeViewWithState extends State<HomeView> {
                         (game) => CardItemMenu(
                             title: game.nome,
                             description: game.descricao,
+                            icon: MdiIcons.controllerClassic,
                             onPressed: () {
-                              // TODO
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => GameView(game: game)),
+                              );
                             }),
                       )
                       .toList(),
