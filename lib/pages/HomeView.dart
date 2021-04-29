@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/models/Genders.dart';
+import 'package:my_database_game/pages/DevelopersView.dart';
+import 'package:my_database_game/pages/DistributorView.dart';
 import 'package:my_database_game/pages/GamesTopView.dart';
 import 'package:my_database_game/pages/UsersTopView.dart';
 import 'package:my_database_game/pages/UsersView.dart';
 import 'package:my_database_game/services/api.dart';
-import 'package:my_database_game/store/ControllerUser.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
-import 'package:provider/provider.dart';
 
 import 'GameView.dart';
 
@@ -111,6 +111,22 @@ class HomeViewWithState extends State<HomeView> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => UsersTopView()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Distribuidores de Jogos'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => DistributorView()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Desenvolvedores de Jogos'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => DevelopersView()),
                 );
               },
             ),

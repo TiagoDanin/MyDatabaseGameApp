@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:my_database_game/models/Businesses.dart';
 import 'package:my_database_game/models/Comments.dart';
 import 'package:my_database_game/models/GameDeveloper.dart';
 import 'package:my_database_game/models/GameDistributor.dart';
@@ -89,6 +90,38 @@ Future<Games> getAllGamesTopComments() async {
   String url = '$apiBaseUrl/getAllGamesTopComments';
   try {
     Response response = await Dio().get(url);
+    if (response.statusCode == 200) {
+      return Games.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return Games(isOk: false);
+}
+
+Future<Games> getDistributorGames(int id) async {
+  String url = '$apiBaseUrl/getDistributorGames';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "id": id,
+    });
+    if (response.statusCode == 200) {
+      return Games.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return Games(isOk: false);
+}
+
+Future<Games> getDeveloperGames(int id) async {
+  String url = '$apiBaseUrl/getDeveloperGames';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "id": id,
+    });
     if (response.statusCode == 200) {
       return Games.fromJson(response.data);
     }
@@ -263,3 +296,16 @@ Future<InsertTableInfo> createComment(int gameId, int userId, String text) async
   return InsertTableInfo(isOk: false);
 }
 
+Future<Businesses> getBusinesses() async {
+  String url = '$apiBaseUrl/getBusinesses';
+  try {
+    Response response = await Dio().get(url);
+    if (response.statusCode == 200) {
+      return Businesses.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return Businesses(isOk: false);
+}
