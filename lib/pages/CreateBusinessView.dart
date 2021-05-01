@@ -2,36 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/InsertTableInfo.dart';
 import 'package:my_database_game/services/api.dart';
-import 'package:my_database_game/store/ControllerUser.dart';
-import 'package:provider/provider.dart';
 
-class CreateCommentView extends StatefulWidget {
-  int gameId;
-
-  CreateCommentView({Key key, this.gameId}) : super(key: key);
+class CreateBusinessView extends StatefulWidget {
+  CreateBusinessView({Key key}) : super(key: key);
 
   @override
-  CreateCommentViewWithState createState() => CreateCommentViewWithState();
+  CreateBusinessViewWithState createState() => CreateBusinessViewWithState();
 }
 
-class CreateCommentViewWithState extends State<CreateCommentView> {
+class CreateBusinessViewWithState extends State<CreateBusinessView> {
   final GlobalKey<ScaffoldState> scaffKey = GlobalKey<ScaffoldState>();
-  ControllerUser userController = ControllerUser();
   final TextEditingController textController = TextEditingController();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userController = Provider.of<ControllerUser>(context);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void sendComment(BuildContext context) async {
-    InsertTableInfo tableInfo = await createComment(widget.gameId, userController.userId, textController.text);
+  void send(BuildContext context) async {
+    InsertTableInfo tableInfo = await createBusiness(textController.text);
 
     bool isValidComment = tableInfo.isOk;
     if (isValidComment) {
@@ -45,11 +29,11 @@ class CreateCommentViewWithState extends State<CreateCommentView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Comentário",
+      title: "Criar Empresa",
       home: Scaffold(
         key: scaffKey,
         appBar: AppBar(
-          title: Text("Comentário"),
+          title: Text("Criar Empresa"),
           leading: IconButton(
             icon: Icon(
               MdiIcons.arrowLeftThick,
@@ -65,7 +49,7 @@ class CreateCommentViewWithState extends State<CreateCommentView> {
                 semanticLabel: 'Enviar',
               ),
               onPressed: () {
-                sendComment(context);
+                send(context);
               },
             ),
           ],
@@ -74,15 +58,11 @@ class CreateCommentViewWithState extends State<CreateCommentView> {
           children: <Widget>[
             ListTile(
               title: TextFormField(
-                controller: textController,
-                decoration: InputDecoration(
-                  labelText: "Escreva um comentario",
-                ),
-                maxLength: 4000,
-                minLines: 6,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-              ),
+                  controller: textController,
+                  decoration: InputDecoration(
+                    labelText: "Empresa",
+                  ),
+                  maxLength: 45),
             ),
           ],
         ),

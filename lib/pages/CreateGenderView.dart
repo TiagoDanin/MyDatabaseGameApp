@@ -2,36 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/InsertTableInfo.dart';
 import 'package:my_database_game/services/api.dart';
-import 'package:my_database_game/store/ControllerUser.dart';
-import 'package:provider/provider.dart';
 
-class CreateCommentView extends StatefulWidget {
-  int gameId;
-
-  CreateCommentView({Key key, this.gameId}) : super(key: key);
+class CreateGenderView extends StatefulWidget {
+  CreateGenderView({Key key}) : super(key: key);
 
   @override
-  CreateCommentViewWithState createState() => CreateCommentViewWithState();
+  CreateGenderViewWithState createState() => CreateGenderViewWithState();
 }
 
-class CreateCommentViewWithState extends State<CreateCommentView> {
+class CreateGenderViewWithState extends State<CreateGenderView> {
   final GlobalKey<ScaffoldState> scaffKey = GlobalKey<ScaffoldState>();
-  ControllerUser userController = ControllerUser();
   final TextEditingController textController = TextEditingController();
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    userController = Provider.of<ControllerUser>(context);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void sendComment(BuildContext context) async {
-    InsertTableInfo tableInfo = await createComment(widget.gameId, userController.userId, textController.text);
+  void send(BuildContext context) async {
+    InsertTableInfo tableInfo = await createGender(textController.text);
 
     bool isValidComment = tableInfo.isOk;
     if (isValidComment) {
@@ -45,11 +29,11 @@ class CreateCommentViewWithState extends State<CreateCommentView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Comentário",
+      title: "Criar Gênero",
       home: Scaffold(
         key: scaffKey,
         appBar: AppBar(
-          title: Text("Comentário"),
+          title: Text("Criar Gênero"),
           leading: IconButton(
             icon: Icon(
               MdiIcons.arrowLeftThick,
@@ -65,7 +49,7 @@ class CreateCommentViewWithState extends State<CreateCommentView> {
                 semanticLabel: 'Enviar',
               ),
               onPressed: () {
-                sendComment(context);
+                send(context);
               },
             ),
           ],
@@ -76,12 +60,9 @@ class CreateCommentViewWithState extends State<CreateCommentView> {
               title: TextFormField(
                 controller: textController,
                 decoration: InputDecoration(
-                  labelText: "Escreva um comentario",
+                  labelText: "Gênero",
                 ),
-                maxLength: 4000,
-                minLines: 6,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
+                maxLength: 45
               ),
             ),
           ],
