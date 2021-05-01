@@ -12,6 +12,7 @@ class SingupView extends StatefulWidget {
 }
 
 class SingupViewWithState extends State<SingupView> {
+  final GlobalKey<ScaffoldState> scaffKey = GlobalKey<ScaffoldState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -39,13 +40,14 @@ class SingupViewWithState extends State<SingupView> {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginView()), ModalRoute.withName('/'));
     } else {
       final snackBar = SnackBar(content: Text('Há um ou mais campos inválidos.'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      scaffKey.currentState.showSnackBar(snackBar);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffKey,
       appBar: AppBar(
         title: Text("Criar Conta"),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/models/Genders.dart';
+import 'package:my_database_game/pages/CreateGameView.dart';
 import 'package:my_database_game/pages/DevelopersView.dart';
 import 'package:my_database_game/pages/DistributorView.dart';
 import 'package:my_database_game/pages/GamesTopView.dart';
@@ -83,7 +84,15 @@ class HomeViewWithState extends State<HomeView> {
               ),
             ),
             ListTile(
-              title: Text('Games'),
+              title: Text('Adicionar Games'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => CreateGameView()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Games em Geral'),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => HomeView()),

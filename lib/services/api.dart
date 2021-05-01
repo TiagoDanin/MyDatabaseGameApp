@@ -9,6 +9,8 @@ import 'package:my_database_game/models/GameRate.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/models/Genders.dart';
 import 'package:my_database_game/models/InsertTableInfo.dart';
+import 'package:my_database_game/models/Item.dart';
+import 'package:my_database_game/models/OsList.dart';
 import 'package:my_database_game/models/Users.dart';
 
 String apiBaseUrl = "http://192.168.0.10:8087/api/v1";
@@ -308,4 +310,95 @@ Future<Businesses> getBusinesses() async {
   }
 
   return Businesses(isOk: false);
+}
+
+Future<OsList> getAllOs() async {
+  String url = '$apiBaseUrl/getAllOs';
+  try {
+    Response response = await Dio().get(url);
+    if (response.statusCode == 200) {
+      return OsList.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return OsList(isOk: false);
+}
+
+Future<InsertTableInfo> createBusiness(String text) async {
+  String url = '$apiBaseUrl/createBusiness';
+  try {
+    Response response = await Dio().post(url, data: {
+      "text": text,
+    });
+    if (response.statusCode == 200) {
+      return InsertTableInfo.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return InsertTableInfo(isOk: false);
+}
+
+Future<InsertTableInfo> createGender(String text) async {
+  String url = '$apiBaseUrl/createGender';
+  try {
+    Response response = await Dio().post(url, data: {
+      "text": text,
+    });
+    if (response.statusCode == 200) {
+      return InsertTableInfo.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return InsertTableInfo(isOk: false);
+}
+
+Future<InsertTableInfo> createGame(
+  int userId,
+  String name,
+  String description,
+  String steamId,
+  DateTime releaseDate,
+  List<Item> genders,
+  List<Item> developers,
+  List<Item> distributions,
+  List<Item> os,
+) async {
+  String url = '$apiBaseUrl/createGame';
+
+  if (genders.length <= 0 || developers.length <= 0 || distributions.length <= 0 || os.length <= 0) {
+    return InsertTableInfo(isOk: false);
+  } else if (name.length <= 0 || description.length <= 0) {
+    return InsertTableInfo(isOk: false);
+  }
+
+  try {
+    Response response = await Dio().post(
+      url,
+      data: {
+        "userId": userId,
+        "name": name,
+        "description": description,
+        "steamId": steamId,
+        "releaseDate": "${releaseDate.year}/${releaseDate.month}/${releaseDate.day}",
+        "genders": genders.map((item) => item.id).join(","),
+        "developers": developers.map((item) => item.id).join(","),
+        "distributions": distributions.map((item) => item.id).join(","),
+        "os": os.map((item) => item.id).join(","),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return InsertTableInfo.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return InsertTableInfo(isOk: false);
 }

@@ -15,6 +15,7 @@ class LoginView extends StatefulWidget {
 }
 
 class LoginViewWithState extends State<LoginView> {
+  final GlobalKey<ScaffoldState> scaffKey = GlobalKey<ScaffoldState>();
   ControllerUser userController = ControllerUser();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -47,7 +48,7 @@ class LoginViewWithState extends State<LoginView> {
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomeView()), ModalRoute.withName('/'));
     } else {
       final snackBar = SnackBar(content: Text('Usuário e/ou senha inválidos.'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      scaffKey.currentState.showSnackBar(snackBar);
     }
   }
 
@@ -57,6 +58,7 @@ class LoginViewWithState extends State<LoginView> {
     passwordController.text = "123456"; // TODO remove in final version
 
     return Scaffold(
+      key: scaffKey,
       appBar: AppBar(
         title: Text("Login"),
       ),

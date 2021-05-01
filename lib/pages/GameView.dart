@@ -30,7 +30,7 @@ class GameViewWithState extends State<GameView> {
   String developer;
   String distribution;
   String rate;
-  List<Comment> commentsList;
+  List<Comment> commentsList = [];
 
   void getOsGameState() async {
     GameOs gameOs = await getOsGame(widget.game.id);
@@ -194,7 +194,7 @@ class GameViewWithState extends State<GameView> {
               getCommentsGame();
             });
           },
-          child: const Icon(Icons.article),
+          child: Icon(Icons.article),
           backgroundColor: Colors.green,
         ),
       ),
