@@ -1,16 +1,6 @@
-# my_database_game
+# MyDatabaseGame
 
-A new Flutter project.
+- Backend: [github.com/TiagoDanin/MyDatabaseGameAPI](https://github.com/TiagoDanin/MyDatabaseGameAPI)
+- Mobile: [github.com/TiagoDanin/MyDatabaseGameApp](https://github.com/TiagoDanin/MyDatabaseGameApp)
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Attention this project is only for demonstration, do not use in production.
