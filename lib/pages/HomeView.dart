@@ -12,6 +12,7 @@ import 'package:my_database_game/services/api.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
 
 import 'GameView.dart';
+import 'SearchView.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key key}) : super(key: key);
@@ -49,7 +50,9 @@ class HomeViewWithState extends State<HomeView> {
               semanticLabel: 'Pesquisar',
             ),
             onPressed: () {
-              print('Search button');
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => SearchView()),
+              );
             },
           ),
           PopupMenuButton<String>(

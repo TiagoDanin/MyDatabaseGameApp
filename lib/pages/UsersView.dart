@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:my_database_game/models/Users.dart';
+import 'package:my_database_game/pages/UserView.dart';
 import 'package:my_database_game/services/api.dart';
 import 'package:my_database_game/widgets/CardItemMenu.dart';
 
@@ -45,7 +46,11 @@ class UsersViewWithState extends State<UsersView> {
                             description: "@${user.nomeDeUsuario}",
                             icon: MdiIcons.account,
                             onPressed: () {
-                              // TODO
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => UserView(user: user),
+                                ),
+                              );
                             }),
                       )
                       .toList(),
