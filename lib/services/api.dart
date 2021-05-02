@@ -402,3 +402,41 @@ Future<InsertTableInfo> createGame(
 
   return InsertTableInfo(isOk: false);
 }
+
+Future<GameRate> sendRateGame(int gameId, int userId, int rate) async {
+  String url = '$apiBaseUrl/sendRateGame';
+  try {
+    Response response = await Dio().post(
+      url,
+      data: {
+        "gameId": gameId,
+        "userId": userId,
+        "rate": rate
+      },
+    );
+    if (response.statusCode == 200) {
+      return GameRate.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return GameRate(isOk: false);
+}
+
+Future<Games> getSearchGames(String query) async {
+  String url = '$apiBaseUrl/getSearchGames';
+  try {
+    Response response = await Dio().get(url, queryParameters: {
+      "text": query,
+    });
+    if (response.statusCode == 200) {
+      print(response.data);
+      return Games.fromJson(response.data);
+    }
+  } catch (error) {
+    print(error);
+  }
+
+  return Games(isOk: false);
+}

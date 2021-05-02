@@ -28,7 +28,6 @@ class User {
   User({
     this.id,
     this.nomeDeUsuario,
-    this.password,
     this.nome,
     this.email,
     this.criadoTempo,
@@ -37,7 +36,6 @@ class User {
 
   int id;
   String nomeDeUsuario;
-  String password;
   String nome;
   String email;
   DateTime criadoTempo;
@@ -46,7 +44,6 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
         nomeDeUsuario: json["nome_de_usuario"],
-        password: json["password"],
         nome: json["nome"] == null ? null : json["nome"],
         email: json["email"],
         criadoTempo: DateTime.parse(json["criado_tempo"]),
@@ -56,7 +53,6 @@ class User {
   Map<String, dynamic> toJson() => {
         "id": id,
         "nome_de_usuario": nomeDeUsuario,
-        "password": password,
         "nome": nome == null ? null : nome,
         "email": email,
         "criado_tempo": criadoTempo.toIso8601String(),

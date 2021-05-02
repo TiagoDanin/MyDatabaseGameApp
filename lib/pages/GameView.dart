@@ -9,6 +9,8 @@ import 'package:my_database_game/models/GameOs.dart';
 import 'package:my_database_game/models/GameRate.dart';
 import 'package:my_database_game/models/Games.dart';
 import 'package:my_database_game/services/api.dart';
+import 'package:my_database_game/store/ControllerUser.dart';
+import 'package:provider/provider.dart';
 
 import 'CreateCommentView.dart';
 
@@ -22,6 +24,7 @@ class GameView extends StatefulWidget {
 }
 
 class GameViewWithState extends State<GameView> {
+  ControllerUser userController = ControllerUser();
   String name = "Jogo";
   String description;
   String dateRelease;
@@ -31,6 +34,12 @@ class GameViewWithState extends State<GameView> {
   String distribution;
   String rate;
   List<Comment> commentsList = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    userController = Provider.of<ControllerUser>(context);
+  }
 
   void getOsGameState() async {
     GameOs gameOs = await getOsGame(widget.game.id);
@@ -70,6 +79,25 @@ class GameViewWithState extends State<GameView> {
 
   void getRatedState() async {
     GameRate response = await getRateGame(widget.game.id);
+    if (response.isOk) {
+      double rateValue = double.parse(response.data.nota);
+      String status = "Crítico";
+      if (rateValue >= 2) {
+        status = "Apaixonado";
+      } else if (rateValue >= 1) {
+        status = "Neutro";
+      } else if (rateValue == 0) {
+        status = "Sem nota";
+      }
+
+      setState(() {
+        rate = "$status($rateValue)";
+      });
+    }
+  }
+
+  void snedRatedState(rateInput) async {
+    GameRate response = await sendRateGame(widget.game.id, userController.userId, rateInput);
     if (response.isOk) {
       double rateValue = double.parse(response.data.nota);
       String status = "Crítico";
@@ -121,6 +149,30 @@ class GameViewWithState extends State<GameView> {
       home: Scaffold(
         appBar: AppBar(
           title: Text("Jogo"),
+          actions: <Widget>[
+            PopupMenuButton<int>(
+              icon: Icon(MdiIcons.starOutline),
+              onSelected: (int result) {
+                snedRatedState(result);
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem<int>(
+                    value: 1,
+                    child: Text("Crítico"),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 2,
+                    child: Text("Neutro"),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 3,
+                    child: Text("Apaixonado"),
+                  )
+                ];
+              },
+            )
+          ],
           leading: IconButton(
             icon: Icon(
               MdiIcons.arrowLeftThick,
